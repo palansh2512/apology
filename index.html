@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bubu & Dudu Apology Story</title>
+  <style>
+    /* ---------- Base theme ---------- */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: #5b455c;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 245, 203, 0.9), transparent 26%),
+        radial-gradient(circle at 80% 18%, rgba(190, 225, 255, 0.75), transparent 28%),
+        linear-gradient(135deg, #ffd7e8 0%, #eadcff 48%, #dff3ff 100%);
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    /* ---------- Floating background decoration ---------- */
+    .sky {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .floaty {
+      position: absolute;
+      color: rgba(255, 105, 160, 0.42);
+      font-size: clamp(1rem, 2vw, 1.8rem);
+      animation: drift var(--speed) ease-in-out infinite;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes drift {
+      0%, 100% {
+        opacity: 0.35;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+      }
+
+      50% {
+        opacity: 0.9;
+        transform: translate3d(18px, -34px, 0) rotate(10deg);
+      }
+    }
+
+    /* ---------- Main card ---------- */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(92vw, 480px);
+      min-height: 610px;
+      padding: 30px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      border-radius: 30px;
+      background: rgba(255, 252, 247, 0.82);
+      box-shadow: 0 24px 70px rgba(129, 93, 134, 0.2);
+      backdrop-filter: blur(16px);
+      animation: cardIn 800ms ease both;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .music-wrap {
+      align-self: flex-end;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .music-toggle {
+      position: relative;
+      min-width: 124px;
+      height: 44px;
+      padding: 5px 13px 5px 7px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 9px;
+      color: #7e4d75;
+      border: 1px solid rgba(255, 255, 255, 0.84);
+      background: linear-gradient(135deg, rgba(255, 231, 240, 0.92), rgba(232, 221, 255, 0.9));
+      box-shadow:
+        inset 0 -3px 0 rgba(152, 95, 132, 0.1),
+        0 10px 22px rgba(148, 101, 155, 0.16);
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+      overflow: hidden;
+    }
+
+    .music-toggle:hover {
+      transform: translateY(-2px) scale(1.03);
+      filter: saturate(1.08);
+      box-shadow:
+        inset 0 -3px 0 rgba(152, 95, 132, 0.1),
+        0 15px 28px rgba(148, 101, 155, 0.24);
+    }
+
+    .music-toggle[aria-pressed="true"] {
+      color: #fff;
+      background: linear-gradient(135deg, #ff7dac, #b993ff);
+    }
+
+    .music-toggle[aria-pressed="true"] .music-bars span {
+      animation-play-state: running;
+      background: #fff;
+    }
+
+    .music-disc {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #9b5c86;
+      background:
+        radial-gradient(circle, #fff 0 18%, transparent 19%),
+        conic-gradient(from 120deg, #fff7c8, #ffc9dc, #d7ccff, #cdefff, #fff7c8);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.7);
+    }
+
+    .music-toggle[aria-pressed="true"] .music-disc {
+      animation: spinDisc 4s linear infinite;
+    }
+
+    @keyframes spinDisc {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .music-label {
+      font-size: 0.84rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .music-bars {
+      height: 18px;
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      margin-left: auto;
+    }
+
+    .music-bars span {
+      width: 3px;
+      height: var(--bar);
+      border-radius: 9px;
+      background: #b2739e;
+      animation: equalize 780ms ease-in-out infinite alternate;
+      animation-delay: var(--delay);
+      animation-play-state: paused;
+    }
+
+    @keyframes equalize {
+      to {
+        height: calc(var(--bar) + 8px);
+      }
+    }
+
+    .story-stage {
+      width: 100%;
+      min-height: 390px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .scene {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      animation: fadeSlide 520ms ease both;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .character-row {
+      min-height: 210px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    /* ---------- Cartoon characters ---------- */
+    .character {
+      position: relative;
+      width: 124px;
+      height: 166px;
+      transform-origin: 50% 100%;
+      animation: bob 3s ease-in-out infinite;
+    }
+
+    .character.small {
+      scale: 0.92;
+    }
+
+    .character.bubu {
+      animation-delay: 350ms;
+    }
+
+    .character.sad {
+      animation: sadSway 2.9s ease-in-out infinite;
+    }
+
+    .character.apologetic {
+      animation: apologize 2.2s ease-in-out infinite;
+    }
+
+    .character.happy {
+      animation: happyHop 950ms ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8px) rotate(-1.5deg);
+      }
+    }
+
+    @keyframes sadSway {
+      0%, 100% {
+        transform: translateY(0) rotate(-2deg);
+      }
+
+      50% {
+        transform: translateY(5px) rotate(2deg);
+      }
+    }
+
+    @keyframes apologize {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      45% {
+        transform: translateY(8px) rotate(4deg);
+      }
+
+      68% {
+        transform: translateY(3px) rotate(-2deg);
+      }
+    }
+
+    @keyframes happyHop {
+      0%, 100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+
+      45% {
+        transform: translateY(-18px) rotate(3deg);
+      }
+
+      65% {
+        transform: translateY(-8px) rotate(-3deg);
+      }
+    }
+
+    .body {
+      position: absolute;
+      left: 15px;
+      bottom: 0;
+      width: 94px;
+      height: 122px;
+      border: 3px solid #704041;
+      border-radius: 46% 46% 34% 34%;
+      background: var(--fur);
+      box-shadow: inset -10px -8px 0 rgba(98, 55, 70, 0.08);
+      animation: breathe 3s ease-in-out infinite;
+      transform-origin: 50% 100%;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scaleY(1);
+      }
+
+      50% {
+        transform: scaleY(1.025);
+      }
+    }
+
+    .ear {
+      position: absolute;
+      top: 29px;
+      width: 25px;
+      height: 25px;
+      border: 3px solid #704041;
+      border-radius: 50%;
+      background: var(--fur);
+      transform-origin: 50% 100%;
+      animation: earWiggle 3.6s ease-in-out infinite;
+    }
+
+    .ear.left {
+      left: 18px;
+    }
+
+    .ear.right {
+      right: 18px;
+      animation-delay: 140ms;
+    }
+
+    @keyframes earWiggle {
+      0%, 82%, 100% {
+        transform: rotate(0deg);
+      }
+
+      88% {
+        transform: rotate(-9deg);
+      }
+
+      94% {
+        transform: rotate(7deg);
+      }
+    }
+
+    .face {
+      position: absolute;
+      left: 26px;
+      top: 67px;
+      width: 72px;
+      height: 42px;
+    }
+
+    .eye {
+      position: absolute;
+      top: 11px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #513234;
+      transform-origin: 50% 50%;
+      animation: blinkEyes 4.4s ease-in-out infinite;
+    }
+
+    .eye.left {
+      left: 14px;
+    }
+
+    .eye.right {
+      right: 14px;
+    }
+
+    @keyframes blinkEyes {
+      0%, 91%, 100% {
+        transform: scaleY(1);
+      }
+
+      94%, 96% {
+        transform: scaleY(0.12);
+      }
+    }
+
+    .mouth {
+      position: absolute;
+      left: 30px;
+      top: 19px;
+      width: 13px;
+      height: 8px;
+      border-bottom: 3px solid #513234;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .mouth.sad {
+      top: 24px;
+      border-bottom: 0;
+      border-top: 3px solid #513234;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .character.happy .mouth {
+      top: 17px;
+      width: 18px;
+      height: 12px;
+      border-bottom-width: 4px;
+      border-radius: 0 0 18px 18px;
+    }
+
+    .character.apologetic .mouth {
+      top: 22px;
+      width: 10px;
+      height: 10px;
+      border: 3px solid #513234;
+      border-top: 0;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .cheek {
+      position: absolute;
+      top: 31px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--cheek);
+      opacity: 0.9;
+    }
+
+    .cheek.left {
+      left: -4px;
+    }
+
+    .cheek.right {
+      right: -4px;
+    }
+
+    .arm {
+      position: absolute;
+      bottom: 43px;
+      width: 18px;
+      height: 46px;
+      border: 3px solid #704041;
+      border-top: 0;
+      border-radius: 0 0 16px 16px;
+      background: var(--fur);
+      transform-origin: 50% 0;
+      animation: pawWave 2.5s ease-in-out infinite;
+    }
+
+    .arm.left {
+      left: 6px;
+      transform: rotate(10deg);
+    }
+
+    .arm.right {
+      right: 6px;
+      transform: rotate(-10deg);
+      animation-delay: 300ms;
+    }
+
+    .character.apologetic .arm.right {
+      animation: sorryPaw 1.6s ease-in-out infinite;
+    }
+
+    .character.happy .arm.left,
+    .character.happy .arm.right {
+      animation: cheerPaws 900ms ease-in-out infinite;
+    }
+
+    @keyframes pawWave {
+      0%, 100% {
+        translate: 0 0;
+      }
+
+      50% {
+        translate: 0 -3px;
+      }
+    }
+
+    @keyframes sorryPaw {
+      0%, 100% {
+        transform: rotate(-10deg);
+      }
+
+      50% {
+        transform: rotate(-34deg) translateY(-4px);
+      }
+    }
+
+    @keyframes cheerPaws {
+      0%, 100% {
+        transform: rotate(18deg) translateY(-4px);
+      }
+
+      50% {
+        transform: rotate(-18deg) translateY(-10px);
+      }
+    }
+
+    .foot {
+      position: absolute;
+      bottom: -4px;
+      width: 27px;
+      height: 19px;
+      border: 3px solid #704041;
+      border-top: 0;
+      border-radius: 0 0 18px 18px;
+      background: var(--fur);
+    }
+
+    .foot.left {
+      left: 31px;
+    }
+
+    .foot.right {
+      right: 31px;
+    }
+
+    .dudu {
+      --fur: #d59a73;
+      --cheek: #ffd18c;
+    }
+
+    .bubu {
+      --fur: #fffdf8;
+      --cheek: #ffc4c9;
+    }
+
+    .bubu .ear {
+      width: 24px;
+      height: 24px;
+      border-color: #5f3436;
+      background: #5f3436;
+    }
+
+    .bubu .body {
+      border-radius: 48% 48% 35% 35%;
+    }
+
+    .bowtie {
+      position: absolute;
+      left: 49px;
+      bottom: 50px;
+      width: 26px;
+      height: 16px;
+    }
+
+    .bowtie::before,
+    .bowtie::after {
+      content: "";
+      position: absolute;
+      width: 17px;
+      height: 15px;
+      border-radius: 50% 45% 50% 45%;
+      background: #5f3436;
+    }
+
+    .bowtie::before {
+      left: 0;
+      transform: rotate(24deg);
+    }
+
+    .bowtie::after {
+      right: 0;
+      transform: rotate(-24deg);
+    }
+
+    .anger {
+      position: absolute;
+      left: 22px;
+      top: 7px;
+      color: #d24d76;
+      font-size: 26px;
+      font-weight: 800;
+      transform: rotate(-15deg);
+      animation: twitch 900ms ease-in-out infinite;
+    }
+
+    @keyframes twitch {
+      50% {
+        transform: translateY(-3px) rotate(-10deg);
+      }
+    }
+
+    .shadow {
+      position: absolute;
+      left: 21px;
+      bottom: -10px;
+      width: 82px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(174, 116, 145, 0.16);
+      filter: blur(1px);
+    }
+
+    /* ---------- Dialogue and actions ---------- */
+    .dialogue {
+      min-height: 86px;
+      margin: 0;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1.35rem, 5vw, 2.25rem);
+      line-height: 1.25;
+      font-weight: 800;
+      color: #684c68;
+    }
+
+    .dialogue::after {
+      content: "";
+      width: 3px;
+      height: 1.15em;
+      margin-left: 5px;
+      border-radius: 3px;
+      background: #d06b95;
+      animation: blink 760ms steps(1) infinite;
+    }
+
+    .dialogue.done::after {
+      display: none;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .actions {
+      width: 100%;
+      min-height: 58px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn {
+      min-height: 50px;
+      padding: 13px 20px;
+      border-radius: 999px;
+      color: #fff;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff7dac, #c784ff);
+      box-shadow: 0 10px 22px rgba(196, 107, 160, 0.27);
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+    }
+
+    .btn.secondary {
+      color: #745475;
+      background: linear-gradient(135deg, #fff2bf, #dff3ff);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      filter: saturate(1.08);
+      box-shadow: 0 15px 28px rgba(196, 107, 160, 0.34);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .mini-caption {
+      margin: 0;
+      color: #947297;
+      font-size: 0.95rem;
+    }
+
+    .heart-pop {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+
+    .heart-pop span {
+      position: absolute;
+      left: var(--x);
+      bottom: -20px;
+      color: #ff70a9;
+      font-size: var(--size);
+      animation: rise 2.8s ease-out forwards;
+    }
+
+    @keyframes rise {
+      to {
+        opacity: 0;
+        transform: translateY(-620px) rotate(28deg);
+      }
+    }
+
+    @media (max-width: 430px) {
+      .card {
+        min-height: 590px;
+        padding: 22px 16px 20px;
+      }
+
+      .character {
+        width: 112px;
+        height: 152px;
+      }
+
+      .body {
+        left: 12px;
+        width: 88px;
+        height: 114px;
+      }
+
+      .character-row {
+        gap: 8px;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating pastel hearts and sparkles behind the card -->
+  <div class="sky" aria-hidden="true">
+    <span class="floaty" style="left: 8%; top: 18%; --speed: 6s; --delay: -1s;">♡</span>
+    <span class="floaty" style="left: 18%; top: 72%; --speed: 7s; --delay: -3s;">✦</span>
+    <span class="floaty" style="left: 78%; top: 16%; --speed: 8s; --delay: -2s;">♡</span>
+    <span class="floaty" style="left: 88%; top: 62%; --speed: 6.4s; --delay: -4s;">✧</span>
+    <span class="floaty" style="left: 50%; top: 8%; --speed: 7.6s; --delay: -5s;">♡</span>
+    <span class="floaty" style="left: 42%; top: 85%; --speed: 8.4s; --delay: -2.5s;">✦</span>
+  </div>
+
+  <main class="card" aria-live="polite">
+    <!-- Music is generated with Web Audio, so no external file is needed -->
+    <div class="music-wrap">
+      <button class="music-toggle" id="musicButton" type="button" aria-label="Toggle background music" aria-pressed="false">
+        <span class="music-disc" aria-hidden="true">♪</span>
+        <span class="music-label">Soft music</span>
+        <span class="music-bars" aria-hidden="true">
+          <span style="--bar: 7px; --delay: 0ms;"></span>
+          <span style="--bar: 12px; --delay: 120ms;"></span>
+          <span style="--bar: 9px; --delay: 240ms;"></span>
+        </span>
+      </button>
+    </div>
+
+    <section class="story-stage" id="storyStage"></section>
+
+    <div class="actions" id="actions"></div>
+    <p class="mini-caption" id="caption">A tiny apology story for Bubu and Dudu</p>
+    <div class="heart-pop" id="heartPop" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    /* ---------- Story state ---------- */
+    const storyStage = document.querySelector("#storyStage");
+    const actions = document.querySelector("#actions");
+    const caption = document.querySelector("#caption");
+    const heartPop = document.querySelector("#heartPop");
+    const musicButton = document.querySelector("#musicButton");
+
+    const scenes = [
+      {
+        text: "Bubu... I messed up 😔",
+        characters: ["dudu"],
+        buttons: [{ label: "What happened?", action: "next" }],
+        caption: "Dudu is trying to be brave."
+      },
+      {
+        text: "I said things I didn't mean... and I hurt you.",
+        characters: ["dudu"],
+        buttons: [{ label: "Next", action: "next" }],
+        caption: "Some words need a soft landing."
+      },
+      {
+        text: "That really hurt, Dudu...",
+        characters: ["bubu"],
+        buttons: [{ label: "Let Dudu answer", action: "next" }],
+        caption: "Bubu's heart feels heavy."
+      },
+      {
+        text: "I'm really sorry. You mean too much to me 💗",
+        characters: ["dudu", "bubu"],
+        buttons: [
+          { label: "Forgive Dudu 💕", action: "forgive" },
+          { label: "Still thinking 😶", action: "wait", secondary: true }
+        ],
+        caption: "The quiet part where hearts listen."
+      }
+    ];
+
+    let sceneIndex = 0;
+    let typingTimer;
+
+    /* ---------- Character template ---------- */
+    function characterHTML(type, moodOverride = "") {
+      const isBubu = type === "bubu";
+      const name = isBubu ? "Bubu" : "Dudu";
+      const mood = moodOverride || (isBubu && sceneIndex >= 2 ? "sad" : "");
+      const motion = mood || (!isBubu && sceneIndex > 0 ? "apologetic" : "");
+      const anger = !isBubu && sceneIndex === 0 ? '<span class="anger">⌁</span>' : "";
+      const bowtie = isBubu ? '<span class="bowtie"></span>' : "";
+
+      return `
+        <div class="character ${type} ${motion} ${isBubu ? "small" : ""}" role="img" aria-label="${name}">
+          <span class="shadow"></span>
+          ${anger}
+          <span class="ear left"></span>
+          <span class="ear right"></span>
+          <span class="body"></span>
+          <span class="arm left"></span>
+          <span class="arm right"></span>
+          <span class="foot left"></span>
+          <span class="foot right"></span>
+          ${bowtie}
+          <span class="face">
+            <span class="eye left"></span>
+            <span class="eye right"></span>
+            <span class="mouth ${mood}"></span>
+            <span class="cheek left"></span>
+            <span class="cheek right"></span>
+          </span>
+        </div>
+      `;
+    }
+
+    /* ---------- Typing effect ---------- */
+    function typeDialogue(element, text) {
+      clearInterval(typingTimer);
+      element.textContent = "";
+      element.classList.remove("done");
+
+      let index = 0;
+      typingTimer = setInterval(() => {
+        element.textContent += text[index];
+        index += 1;
+
+        if (index >= text.length) {
+          clearInterval(typingTimer);
+          element.classList.add("done");
+        }
+      }, 38);
+    }
+
+    /* ---------- Scene rendering ---------- */
+    function renderScene(scene) {
+      storyStage.innerHTML = `
+        <div class="scene">
+          <div class="character-row">
+            ${scene.characters.map(characterHTML).join("")}
+          </div>
+          <p class="dialogue" id="dialogue"></p>
+        </div>
+      `;
+
+      actions.innerHTML = scene.buttons.map((button) => `
+        <button class="btn ${button.secondary ? "secondary" : ""}" type="button" data-action="${button.action}">
+          ${button.label}
+        </button>
+      `).join("");
+
+      caption.textContent = scene.caption;
+      typeDialogue(document.querySelector("#dialogue"), scene.text);
+    }
+
+    function nextScene() {
+      sceneIndex = Math.min(sceneIndex + 1, scenes.length - 1);
+      renderScene(scenes[sceneIndex]);
+    }
+
+    function showEnding(kind) {
+      const forgiven = kind === "forgive";
+      const message = forgiven
+        ? "Yay! Bubu forgave Dudu 🥺💖"
+        : "Dudu will wait... patiently ❤️";
+
+      storyStage.innerHTML = `
+        <div class="scene">
+          <div class="character-row">
+            ${characterHTML("dudu", forgiven ? "happy" : "")}
+            ${characterHTML("bubu", forgiven ? "happy" : "sad")}
+          </div>
+          <p class="dialogue" id="dialogue"></p>
+        </div>
+      `;
+
+      actions.innerHTML = '<button class="btn secondary" type="button" data-action="restart">Play again</button>';
+      caption.textContent = forgiven ? "Two little hearts feel lighter." : "Apologies can be patient too.";
+      typeDialogue(document.querySelector("#dialogue"), message);
+
+      if (forgiven) {
+        burstHearts();
+      }
+    }
+
+    /* ---------- Button interactions ---------- */
+    actions.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+
+      const action = button.dataset.action;
+      if (action === "next") nextScene();
+      if (action === "forgive") showEnding("forgive");
+      if (action === "wait") showEnding("wait");
+      if (action === "restart") {
+        sceneIndex = 0;
+        renderScene(scenes[sceneIndex]);
+      }
+    });
+
+    /* ---------- Celebration hearts ---------- */
+    function burstHearts() {
+      heartPop.innerHTML = "";
+      for (let i = 0; i < 26; i += 1) {
+        const heart = document.createElement("span");
+        heart.textContent = i % 3 === 0 ? "💖" : "♡";
+        heart.style.setProperty("--x", `${Math.random() * 94 + 3}%`);
+        heart.style.setProperty("--size", `${Math.random() * 18 + 18}px`);
+        heart.style.animationDelay = `${Math.random() * 0.8}s`;
+        heartPop.appendChild(heart);
+      }
+
+      setTimeout(() => {
+        heartPop.innerHTML = "";
+      }, 3800);
+    }
+
+    /* ---------- Soft generated music toggle ---------- */
+    let audioContext;
+    let musicNodes = [];
+    let musicOn = false;
+
+    function playSoftMusic() {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioContext.currentTime;
+      const masterGain = audioContext.createGain();
+      masterGain.gain.setValueAtTime(0.035, now);
+      masterGain.connect(audioContext.destination);
+
+      const notes = [261.63, 329.63, 392.00, 493.88];
+      notes.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.linearRampToValueAtTime(0.28, now + 1 + index * 0.3);
+        oscillator.connect(gain);
+        gain.connect(masterGain);
+        oscillator.start(now + index * 0.22);
+        musicNodes.push(oscillator, gain, masterGain);
+      });
+    }
+
+    function stopSoftMusic() {
+      const now = audioContext?.currentTime || 0;
+      musicNodes.forEach((node) => {
+        if (node.gain) {
+          node.gain.linearRampToValueAtTime(0.0001, now + 0.45);
+        }
+        if (node.stop) {
+          setTimeout(() => node.stop(), 500);
+        }
+      });
+      musicNodes = [];
+    }
+
+    musicButton.addEventListener("click", async () => {
+      musicOn = !musicOn;
+      musicButton.setAttribute("aria-pressed", String(musicOn));
+      musicButton.querySelector(".music-label").textContent = musicOn ? "Playing" : "Soft music";
+      musicButton.querySelector(".music-disc").textContent = musicOn ? "♫" : "♪";
+
+      if (musicOn) {
+        playSoftMusic();
+      } else {
+        stopSoftMusic();
+      }
+    });
+
+    renderScene(scenes[sceneIndex]);
+  </script>
+</body>
+</html>
